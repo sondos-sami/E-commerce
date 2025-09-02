@@ -22,6 +22,4 @@ A modern, responsive E-Commerce web application built with Next.js 15, React 19,
 
 🧑‍💻 Form validation with React Hook Form + Zod
 
-UI Enhancements: Framer Motion, React Hot Toast, FontAwesome
-
-Types: TypeScript
+ 

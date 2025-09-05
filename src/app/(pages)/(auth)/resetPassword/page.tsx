@@ -13,7 +13,7 @@ import { useRouter } from "next/navigation";
 export default function RegisterForm() {
    const router=useRouter();
   const { register, handleSubmit, reset  } = useForm();
-const {email}=useContext(EmailContext);
+const { email } = useContext(EmailContext) as { email: string };
 console.log("email",email)
     async function resetPassword(data:string){
     try {

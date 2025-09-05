@@ -1,8 +1,6 @@
 "use server";
 import { cookies } from "next/headers";
-
-// Get logged-in user's cart
-
+ 
 export async function getLoggedUserCart() {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/cart`, {
     headers: {
@@ -13,7 +11,7 @@ export async function getLoggedUserCart() {
      
     
   });
-
+ 
   return response.json();
 }
 
@@ -26,8 +24,10 @@ export async function addProductToCart(id: string) {
       token: cookies().get("token")?.value || "",
     },
     body: JSON.stringify({ productId: id }),
+    
   });
 
+ 
   return response.json();
 }
 

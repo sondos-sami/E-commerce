@@ -87,7 +87,7 @@ export default function Navbar() {
       <div className="sm:hidden flex items-center ml-auto z-50">
         <Button
           size="sm"
-          variant="outline"
+          variant="bordered"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
         >
           <i className="fa-solid fa-bars"></i>

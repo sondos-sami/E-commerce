@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import Image from "next/image";
 import { Button } from "@heroui/react";
 import {
@@ -11,17 +11,28 @@ import {
 import toast from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Loading from "@/app/_Component/Loading";
+import { useRouter } from "next/navigation";
+ 
 
 export default function CartPage() {
   const queryClient = useQueryClient();
+ 
+  const router = useRouter();
 
-  // Fetch cart
   const { data, isLoading } = useQuery({
     queryKey: ["cart"],
     queryFn: getLoggedUserCart,
-   });
-const cart = data?.data?.products ?? [];
+  });
+     useEffect(() => {
+    localStorage.setItem("id",data?.data?.cartOwner)
+    
+  }, [data]);
+   
+  const cart = data?.data?.products ?? [];
+  
  
+ 
+
   const { mutate: removeFromCart } = useMutation({
     mutationFn: (id: string) => deleteProductFromCart(id),
     onSuccess: () => {
@@ -65,6 +76,10 @@ const cart = data?.data?.products ?? [];
 
   if (isLoading) {
     return <Loading />;
+  }
+
+  function checkout() {
+    router.push(`cart/checkout?cartId=${data?.cartId}`);
   }
 
   return (
@@ -147,13 +162,12 @@ const cart = data?.data?.products ?? [];
             <div className="mt-6 flex justify-between">
               <Button
                 color="danger"
-                size="lg"
                 variant="flat"
                 onPress={() => removeAllFromCart()}
               >
                 Clear All
               </Button>
-              <Button color="success" size="lg" className="px-8">
+              <Button color="success" className="px-8 sm:px-4" onClick={checkout}>
                 Checkout
               </Button>
             </div>

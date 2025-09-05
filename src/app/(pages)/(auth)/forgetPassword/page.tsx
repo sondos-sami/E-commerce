@@ -4,9 +4,12 @@ import { EmailContext } from "@/app/Context/emailContext";
 import { forgotPasswords } from "@/lib/Services/authentication";
 import { useRouter } from "next/navigation";
 import React, { useContext } from "react";
-
+interface EmailContextType {
+  email: string;
+  setEmail: React.Dispatch<React.SetStateAction<string>>;
+}
 export default function ForgetPassword() {
-  const { email, setEmail } = useContext(EmailContext);
+  const { email, setEmail }= useContext(EmailContext)as EmailContextType;
   const router = useRouter();
 
   async function sendEmail() {

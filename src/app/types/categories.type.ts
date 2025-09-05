@@ -3,6 +3,6 @@ export interface Icategory {
     name:      string;
     slug:      string;
     image:     string;
-    createdAt: Date;
-    updatedAt: Date;
+    createdAt: string;
+    updatedAt: string;
 }

@@ -4,18 +4,20 @@ import { useForm } from "react-hook-form";
 import { loginUserApi } from "@/lib/Services/authentication";
 import toast from "react-hot-toast";
 import Link from "next/link";
+import { LoginFormData } from "@/app/types/auth.types";
  
 export default function RegisterForm() {
-  const { register, handleSubmit, reset  } = useForm();
+  const { register, handleSubmit, reset  } =  useForm<LoginFormData>();
 
-    async function loginUser(data) {
-      console.log(data)
+    async function loginUser(data:LoginFormData) {
+     
     try {
       
       const res = await loginUserApi(data);
  
       if(res.message==="success")
             { toast.success("Welcome back!");
+              console.log(res);
               reset();
 document.cookie = `token=${res.token}; path=/`;
  

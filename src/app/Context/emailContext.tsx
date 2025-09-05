@@ -1,6 +1,6 @@
+"use client"
 import { createContext, useState, ReactNode } from "react";
-import ForgetPassword from "../(pages)/(auth)/forgetPassword/page";
-
+ 
  
  
 export const EmailContext = createContext();

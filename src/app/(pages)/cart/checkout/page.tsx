@@ -7,8 +7,12 @@ import { useState } from "react";
 import toast from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 
-export default function Order() {
-  const searchParams = useSearchParams();
+ 
+import { Suspense } from 'react'
+ 
+
+function CheckoutContent() {
+  const searchParams = useSearchParams()
   const cartId = searchParams.get('cartId');
   const route=useRouter();
     const queryClient = useQueryClient();
@@ -27,9 +31,9 @@ export default function Order() {
       route.push("/allorders")
     }
   }
-
+  
   return (
-    <form onSubmit={handleSubmit(sendData)} className="flex flex-col mx-auto md:w-[75%] m-11 gap-6 bg-white rounded-2xl p-6">
+     <form onSubmit={handleSubmit(sendData)} className="flex flex-col mx-auto md:w-[75%] m-11 gap-6 bg-white rounded-2xl p-6">
       <h2 className="text-2xl font-bold text-center">Order Details</h2>
       
       <Input
@@ -73,5 +77,13 @@ export default function Order() {
         Pay Now
       </Button>
     </form>
-  );
+  )
+}
+
+export default function CheckoutPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <CheckoutContent />
+    </Suspense>
+  )
 }

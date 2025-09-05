@@ -6,7 +6,7 @@ export async function getAllCategories() {
 
     if (!response.ok) {
       return(response.statusText || "Failed to fetch products");
-    }
+    },
 
     const { data } = await response.json();
     return { data }; 

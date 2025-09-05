@@ -5,24 +5,29 @@ import { loginUserApi } from "@/lib/Services/authentication";
 import toast from "react-hot-toast";
 import Link from "next/link";
 import { LoginFormData } from "@/app/types/auth.types";
+import { useRouter } from "next/navigation";
+ 
  
 export default function RegisterForm() {
   const { register, handleSubmit, reset  } =  useForm<LoginFormData>();
-
+ const route=useRouter()
     async function loginUser(data:LoginFormData) {
      
     try {
       
       const res = await loginUserApi(data);
- 
+ console.log(res)
       if(res.message==="success")
             { toast.success("Welcome back!");
-              console.log(res);
+             localStorage.setItem("user",res.user)
+              
               reset();
 document.cookie = `token=${res.token}; path=/`;
  
 
-    localStorage.setItem("token", res.token);}
+    localStorage.setItem("token", res.token);
+    route.push("/")
+  }
      else{
  toast.error(res.errors?.msg||res.message );
       }

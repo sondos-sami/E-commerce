@@ -41,6 +41,7 @@ export default function RegisterForm() {
      
     const res=  await registerUserApi(data);
       toast.success("Account created successfully")
+      console.log(res)
       router.push("/login");
     } catch (err) {
         toast.error(err.message)

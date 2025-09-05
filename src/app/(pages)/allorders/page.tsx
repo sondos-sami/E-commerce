@@ -15,6 +15,7 @@ export default function Allorders() {
         const ordersData = await getAllUserOrders(localStorage.getItem("id"));
         setOrders(ordersData);
         console.log(ordersData)
+        console.log(ordersData)
         setLoading(false);
       } catch (err) {
         
@@ -39,7 +40,7 @@ export default function Allorders() {
         </div>
       ) : (
         <div className="space-y-6">
-          {orders.map(order => (
+          {orders?.map(order => (
             <div key={order._id} className="bg-white rounded-lg shadow-md overflow-hidden">
               {/* Order Header */}
               <div className="bg-gray-50 px-6 py-4 border-b flex flex-wrap justify-between items-center">
@@ -62,7 +63,7 @@ export default function Allorders() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                   <div>
                     <h3 className="text-md font-semibold text-gray-700 mb-2">Shipping Address</h3>
-                    <p className="text-gray-600">{order.user.name}</p>
+                    <p className="text-gray-600">{order?.user.name}</p>
                     <p className="text-gray-600">{order?.shippingAddress?.city}</p>
                     <p className="text-gray-600">{order?.shippingAddress?.phone}</p>
                   </div>

@@ -114,10 +114,10 @@ export default function ProductCard({
       <CardBody className="overflow-visible py-2 relative">
         <Image
           alt={product.title}
-          className={`object-cover rounded-xl h-[22rem] w-full transition-all duration-500
-            ${isHovered ? "scale-105 brightness-110" : "scale-100 brightness-100"}`}
+          className={`object-cover text-center rounded-xl sm:h-[22rem] h-[20rem] w-full transition-all duration-500
+            ${isHovered ? " scale-105 brightness-110" : " scale-100 brightness-100"}`}
           src={product.imageCover}
-          width={270}
+          width={500}
         />
         
        

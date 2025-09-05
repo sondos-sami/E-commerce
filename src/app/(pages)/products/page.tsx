@@ -1,12 +1,14 @@
 import React, { Suspense } from 'react'
 import ProductGridSkeleton from '@/app/_Component/Product/Skeleton/ProductGridSkeleton';
 import AllProducts from '@/app/_Component/Product/AllProducts';
-import SearchInput from '@/app/_Component/Product/SearchComponent';
+import SearchInputWithSuspense from '@/app/_Component/Product/searchWrapper';
+ 
 
 export default async function Page({ searchParams }) {
   return (
     <>
-      <SearchInput />
+   
+       <SearchInputWithSuspense />
       <Suspense fallback={<ProductGridSkeleton/>}>
         <AllProducts searchParams={searchParams} />
       </Suspense>

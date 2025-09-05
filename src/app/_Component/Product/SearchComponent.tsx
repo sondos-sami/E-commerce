@@ -10,7 +10,7 @@ export default function SearchInput() {
   const [value, setValue] = useState('');
   const [isLoading, setIsLoading] = useState(true);
 
-  // Initialize value after component mounts
+ 
   useEffect(() => {
     if (searchParams) {
       setValue(searchParams.get('search') || '');

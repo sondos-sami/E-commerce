@@ -4,8 +4,12 @@ import { verfiyCode } from "@/lib/Services/authentication";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import toast from "react-hot-toast";
+
+type VerifyCodeFormData = {
+  resetCode: string;
+};
 
 export default function VerifyCode() {
   const [code, setCode] = useState<string>("");
@@ -17,31 +21,30 @@ export default function VerifyCode() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<VerifyCodeFormData>({
     mode: "onChange",
   });
 
-  async function handleVerifyCode(formData: { resetCode: string }) {
+  const handleVerifyCode: SubmitHandler<VerifyCodeFormData> = async (formData) => {
     setIsLoading(true);
     setError("");
-    
+
     try {
-      const res = await verfiyCode({ "resetCode": formData.resetCode });
-      console.log(formData.resetCode,res)
+      const res = await verfiyCode({ resetCode: formData.resetCode });
+      console.log(formData.resetCode, res);
       if (res.status === "Success") {
         toast.success("Code verified successfully!");
-        router.push('/resetPassword');
+        router.push("/resetPassword");
       } else {
         setError(res.message || "Enter Correct Code");
         toast.error(res.message || "Enter Correct Code");
       }
     } catch (err: any) {
-     
       toast.error("Try Again");
     } finally {
       setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-100">
@@ -71,14 +74,19 @@ export default function VerifyCode() {
               placeholder="Enter your code"
               {...register("resetCode", {
                 required: "Verification code is required",
-              
               })}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCode(e.target.value)}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                setCode(e.target.value)
+              }
               className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none ${
                 errors.resetCode ? "border-red-500" : "border-gray-300"
               }`}
             />
-         
+            {errors.resetCode && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.resetCode.message}
+              </p>
+            )}
           </div>
 
           <button
@@ -101,12 +109,10 @@ export default function VerifyCode() {
           </button>
         </form>
 
-         
-
         <div className="mt-6 p-4 bg-gray-50 rounded-lg">
           <p className="text-sm text-gray-600 text-center">
             📧 Check your email inbox and spam folder for the verification code.
-              expires after a  10 minutes.
+            It expires after 10 minutes.
           </p>
         </div>
       </div>

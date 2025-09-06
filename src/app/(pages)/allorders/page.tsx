@@ -2,22 +2,33 @@
 
 import { getAllUserOrders } from '@/lib/Services/orders';
 import React, { useEffect, useState } from 'react';
+import { IOrder } from '@/app/types/orders.type';
 
 export default function Allorders() {
-  const [orders, setOrders] = useState([]);
+  const [orders, setOrders] = useState<IOrder[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     async function fetchOrders() {
       
       try {
-        const ordersData = await getAllUserOrders(localStorage.getItem("id"));
-        setOrders(ordersData);
-        console.log(ordersData)
+        const userId = localStorage.getItem("id");
+        if (!userId) {
+          setError("User not found");
+          setLoading(false);
+          return;
+        }
+        
+        const ordersData = await getAllUserOrders(userId);
+        if (ordersData.data) {
+          setOrders(ordersData.data);
+        } else {
+          setOrders([]);
+        }
         console.log(ordersData)
         setLoading(false);
-      } catch (err) {
+      } catch (err: any) {
         
         setError("Failed to fetch orders");
         setLoading(false);
@@ -78,7 +89,7 @@ export default function Allorders() {
                 {/* Order Items */}
                 <h3 className="text-md font-semibold text-gray-700 mb-4">Order Items</h3>
                 <div className="border rounded-lg overflow-hidden">
-                  {order.cartItems.map((item, index) => (
+                  {order.cartItems.map((item: any, index: number) => (
                     <div key={item._id} className={`flex items-center p-4 ${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'}`}>
                       <img 
                         src={item.product.imageCover} 

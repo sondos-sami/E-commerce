@@ -1,9 +1,12 @@
 "use client"
 import { createContext, useState, ReactNode } from "react";
- 
- 
- 
-export const EmailContext = createContext();
+
+interface EmailContextType {
+  email: string;
+  setEmail: (email: string) => void;
+}
+
+export const EmailContext = createContext<EmailContextType | undefined>(undefined);
 
  
 export function EmailProvider({ children }: { children: ReactNode }) {

@@ -43,7 +43,7 @@ export default function RegisterForm() {
       toast.success("Account created successfully")
       console.log(res)
       router.push("/login");
-    } catch (err) {
+    } catch (err: any) {
         toast.error(err.message)
     }
   }

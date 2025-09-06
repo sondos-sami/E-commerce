@@ -3,13 +3,13 @@ export async function getAllBrands() {
     const response = await fetch("https://ecommerce.routemisr.com/api/v1/brands");
 
     if (!response.ok) {
-      return(response.statusText );
+      return { error: response.statusText };
     }
 
     const { data } = await response.json();
     return { data }; 
   } catch (err: any) {
-    return { error: err.message  };
+    return { error: err.message };
   }
 }
  

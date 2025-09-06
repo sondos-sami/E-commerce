@@ -4,15 +4,32 @@ import ProductCard from '@/app/_Component/Product/ProductCard';
 import { getAllProducts } from '@/lib/Services/products';
 import { getLoggedUserWishlist } from '@/lib/Services/wishList';
 
-export default async function AllProducts({ searchParams }) {
-  const { data } = await getAllProducts();
-  const res = await getLoggedUserWishlist();
-  const productIds = res?.data?.map(product => product._id);
+interface AllProductsProps {
+  searchParams?: {
+    search?: string;
+  };
+}
+
+export default async function AllProducts({ searchParams }: AllProductsProps) {
+  const productsResponse = await getAllProducts();
+  const wishlistResponse = await getLoggedUserWishlist();
+  
+  // Handle error cases
+  if (productsResponse.error || !productsResponse.data) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-red-500 text-lg">Error loading products: {productsResponse.error || 'No data available'}</p>
+      </div>
+    );
+  }
+  
+  const data = productsResponse.data;
+  const productIds = wishlistResponse?.data?.map((product: any) => product._id) || [];
   
   // Filter products based on search query
   const filteredProducts = searchParams?.search 
-    ? data.filter(product =>
-        product.title?.toLowerCase().includes(searchParams.search.toLowerCase())
+    ? data.filter((product: Iproduct) =>
+        product.title?.toLowerCase().includes(searchParams.search?.toLowerCase() || "")
       )
     : data;
 

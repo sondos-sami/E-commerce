@@ -1,6 +1,6 @@
 "use client";
 import { Input, Button, Card, CardBody, CardHeader } from "@heroui/react";
-import { useForm } from "react-hook-form";
+import { useForm, FieldValues } from "react-hook-form";
  
 import toast from "react-hot-toast";
 import Link from "next/link";
@@ -9,13 +9,17 @@ import { useContext } from "react";
 import { EmailContext } from "@/app/Context/emailContext";
 import { useRouter } from "next/navigation";
  
- 
+interface ResetPasswordData {
+  email: string;
+  newPassword: string;
+}
+  
 export default function RegisterForm() {
    const router=useRouter();
-  const { register, handleSubmit, reset  } = useForm();
+  const { register, handleSubmit, reset  } = useForm<ResetPasswordData>();
 const { email } = useContext(EmailContext) as { email: string };
 console.log("email",email)
-    async function resetPassword(data:string){
+    async function resetPassword(data: ResetPasswordData){
     try {
       
 

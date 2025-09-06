@@ -5,14 +5,12 @@ export async function getAllCategories() {
     });
 
     if (!response.ok) {
-      
-      throw new Error(response.statusText || "Failed to fetch categories");
+      return { error: response.statusText || "Failed to fetch categories" };
     }
 
     const { data } = await response.json();
     return { data }; 
   } catch (err: any) {
-    
     return { error: err.message || "Something went wrong" };
   }
 }

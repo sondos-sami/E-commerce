@@ -7,16 +7,16 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 
 export default function VerifyCode() {
-    const [code,setCode]=useState();
-  const router=  useRouter()
+    const [code, setCode] = useState<string>("");
+  const router = useRouter()
  
-    async function handleSubmit(e){
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
           e.preventDefault();
         try{
         const res=await verfiyCode({"resetCode":code});
 router.push('/resetPassword');
         console.log(res)}
-        catch(err){
+        catch(err: any){
             console.log(err)
         }
     }
@@ -40,7 +40,7 @@ router.push('/resetPassword');
               type="text"
               id="code"
               placeholder="Enter your code"
-            onChange={(e)=>setCode(e.target.value)}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>)=>setCode(e.target.value)}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
           </div>

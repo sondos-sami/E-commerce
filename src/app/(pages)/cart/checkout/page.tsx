@@ -20,7 +20,12 @@ function CheckoutContent() {
   const [paymentMethod, setPaymentMethod] = useState('cash'); 
   const { register, handleSubmit } = useForm();
 
-  async function sendData(formData) {
+  async function sendData(formData: any) {
+    if (!cartId) {
+      toast.error("Cart ID not found");
+      return;
+    }
+    
     if (paymentMethod === 'credit') {
       const res = await checkoutCartCredit(cartId, { formData });
      
@@ -38,7 +43,6 @@ function CheckoutContent() {
       
       <Input
         isRequired
-        name="name"
         label="Name"
         placeholder="Enter your name"
         className="rounded-2xl"
@@ -48,7 +52,6 @@ function CheckoutContent() {
       <Input
         isRequired
         type="tel"
-        name="phone"
         label="Phone"
         placeholder="Enter your phone"
         className="rounded-2xl"
@@ -57,7 +60,6 @@ function CheckoutContent() {
 
       <Input
         isRequired
-        name="city"
         label="City"
         placeholder="Enter your city"
         className="rounded-2xl"

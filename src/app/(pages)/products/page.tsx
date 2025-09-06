@@ -4,7 +4,13 @@ import AllProducts from '@/app/_Component/Product/AllProducts';
 import SearchInputWithSuspense from '@/app/_Component/Product/searchWrapper';
  
 
-export default async function Page({ searchParams }) {
+interface ProductsPageProps {
+  searchParams?: {
+    search?: string;
+  };
+}
+
+export default async function Page({ searchParams }: ProductsPageProps) {
   return (
     <>
    

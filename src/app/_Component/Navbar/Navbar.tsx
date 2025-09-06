@@ -16,7 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getLoggedUserCart } from "@/lib/Services/cart";
 
 // Helper function to parse JWT token
-const parseJwt = (token) => {
+const parseJwt = (token: string) => {
   try {
     return JSON.parse(atob(token.split('.')[1]));
   } catch (e) {
@@ -25,11 +25,14 @@ const parseJwt = (token) => {
 };
 
 // Helper function to get cookie value by name
-const getCookie = (name) => {
+const getCookie = (name: string) => {
   if (typeof document === 'undefined') return null;
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
-  if (parts.length === 2) return parts.pop().split(';').shift();
+  if (parts.length === 2) {
+    const result = parts.pop();
+    return result ? result.split(';').shift() : null;
+  }
   return null;
 };
 

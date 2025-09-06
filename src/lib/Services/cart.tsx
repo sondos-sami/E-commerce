@@ -111,7 +111,7 @@ export async function deleteAllProductFromCart() {
       return { error: response.statusText || "Failed to delete all products from cart" };
     }
     
-    return await responcse.json();
+    return await response.json();
   } catch (err: any) {
     return { error: err.message };
   }

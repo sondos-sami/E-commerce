@@ -1,8 +1,7 @@
 import Image from "next/image";
  
 import MainSlider from "./_Component/MainSlider/MainSlider";
-import image1 from "./assets/c-d-x-PDX_a_82obo-unsplash.jpg";
-import image2 from "./assets/rachit-tank-2cFZ_FB08UM-unsplash.jpg";
+// Images are now in public directory
 
 import ProductGridSkeleton from "./_Component/Product/Skeleton/ProductGridSkeleton";
 import { Suspense } from "react";
@@ -22,14 +21,14 @@ export default   function Home() {
         </div>
         <div>
           <Image
-            src={image1}
+            src="/c-d-x-PDX_a_82obo-unsplash.jpg"
             width={400}
             height={100}
             alt="slider image 1"
             className="w-full h-[12rem] object-cover"
           />
           <Image
-            src={image2}
+            src="/rachit-tank-2cFZ_FB08UM-unsplash.jpg"
             width={400}
             height={100}
             alt="slider image 2"

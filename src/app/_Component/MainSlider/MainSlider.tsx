@@ -4,9 +4,7 @@ import React from "react";
  import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
 import Image from "next/image";
-import image1 from "../../assets/ruslan-bardash-4kTbAMRAHtQ-unsplash.jpg"
-import image2 from "../../assets/jakob-owens-O_bhy3TnSYU-unsplash.jpg"
-import image3 from "../../assets/joan-tran-reEySFadyJQ-unsplash.jpg"
+// Images are now in public directory
 
 export default function MainSlider() {
   var settings = {
@@ -20,7 +18,7 @@ export default function MainSlider() {
     <Slider {...settings}>
       <div>
            <Image
-      src={image2}
+      src="/jakob-owens-O_bhy3TnSYU-unsplash.jpg"
       width={500}
       height={500}
       alt="Picture of the author"
@@ -29,7 +27,7 @@ export default function MainSlider() {
       </div>
         <div>
            <Image
-      src={image1}
+      src="/ruslan-bardash-4kTbAMRAHtQ-unsplash.jpg"
       width={500}
       height={500}
       alt="Picture of the author"
@@ -38,7 +36,7 @@ export default function MainSlider() {
       </div>
         <div>
            <Image
-      src={image3}
+      src="/joan-tran-reEySFadyJQ-unsplash.jpg"
       width={500}
       height={500}
       alt="Picture of the author"

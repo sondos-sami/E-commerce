@@ -7,11 +7,11 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "ecommerce.routemisr.com",
         pathname: "/**",
-
       },
     ],
   },
-
+  // Ensure proper build configuration
+  trailingSlash: false,
 };
 
 export default nextConfig;

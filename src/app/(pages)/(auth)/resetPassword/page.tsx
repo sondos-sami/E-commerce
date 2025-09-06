@@ -1,6 +1,6 @@
 "use client";
 import { Input, Button, Card, CardBody, CardHeader } from "@heroui/react";
-import { useForm, FieldValues } from "react-hook-form";
+import { useForm } from "react-hook-form";
  
 import toast from "react-hot-toast";
 import Link from "next/link";
@@ -19,7 +19,7 @@ export default function RegisterForm() {
   const { register, handleSubmit, reset  } = useForm<ResetPasswordData>();
 const { email } = useContext(EmailContext) as { email: string };
 console.log("email",email)
-    async function resetPassword(data: ResetPasswordData){
+    async function resetPassword(data: ResetPasswordData) {
     try {
       
 
@@ -53,7 +53,7 @@ document.cookie = `token=${res.token}; path=/`;
         <CardBody>
           <form
             className="flex flex-col gap-4"
-            onSubmit={handleSubmit(resetPassword)}
+            onSubmit={handleSubmit((data) => resetPassword(data as ResetPasswordData))}
           >
            
           <Input

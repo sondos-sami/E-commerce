@@ -14,8 +14,8 @@ import {
 } from "@heroui/react";
 import { useQuery } from "@tanstack/react-query";
 import { getLoggedUserCart } from "@/lib/Services/cart";
+import { usePathname } from "next/navigation";
 
-// Helper function to parse JWT token
 const parseJwt = (token: string) => {
   try {
     return JSON.parse(atob(token.split('.')[1]));
@@ -24,7 +24,6 @@ const parseJwt = (token: string) => {
   }
 };
 
-// Helper function to get cookie value by name
 const getCookie = (name: string) => {
   if (typeof document === 'undefined') return null;
   const value = `; ${document.cookie}`;
@@ -40,16 +39,16 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userName, setUserName] = useState("");
+  const pathname = usePathname();
 
   const { data: cartData } = useQuery({
     queryKey: ["cart"],
     queryFn: getLoggedUserCart,
-    enabled: isLoggedIn, // Only fetch cart if user is logged in
+    enabled: isLoggedIn, 
   });
 
   const cart = cartData?.data?.products ?? [];
 
-  // Check authentication status
   useEffect(() => {
     const checkAuthStatus = () => {
       const token = getCookie('token');
@@ -57,12 +56,10 @@ export default function Navbar() {
       setIsLoggedIn(isAuthenticated);
       
       if (isAuthenticated) {
-        // Extract user information from token
         const decodedToken = parseJwt(token);
         if (decodedToken && decodedToken.name) {
           setUserName(decodedToken.name);
         } else {
-          // Fallback if name isn't in token
           setUserName("User");
         }
       } else {
@@ -70,29 +67,21 @@ export default function Navbar() {
       }
     };
 
-    // Check auth status on initial load
     checkAuthStatus();
-
-    // Set up interval to check auth status periodically
     const intervalId = setInterval(checkAuthStatus, 1000);
-    
-    // Clean up interval on component unmount
     return () => clearInterval(intervalId);
   }, []);
 
   const handleLogout = () => {
-    // Clear token cookie
     document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    
-    // Reset state
     setIsLoggedIn(false);
     setUserName("");
-    
-    // Close mobile menu if open
     setIsMobileMenuOpen(false);
-    
-    // Redirect to home page
     window.location.href = "/";
+  };
+
+  const isActiveLink = (path: string) => {
+    return pathname === path;
   };
 
   return (
@@ -107,22 +96,38 @@ export default function Navbar() {
 
       <NavbarContent className="hidden sm:flex gap-4" justify="center">
         <NavbarItem>
-          <Link color="foreground" href="/">
+          <Link 
+            color="foreground" 
+            href="/"
+            className={`font-bold ${isActiveLink("/") ? "text-blue-600" : "text-gray-700"}`}
+          >
             Home
           </Link>
         </NavbarItem>
-        <NavbarItem isActive>
-          <Link aria-current="page" href="/products">
+        <NavbarItem>
+          <Link 
+            color="foreground" 
+            href="/products"
+            className={`font-bold ${isActiveLink("/products") ? "text-blue-600" : "text-gray-700"}`}
+          >
             Products
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="/categories">
+          <Link 
+            color="foreground" 
+            href="/categories"
+            className={`font-bold ${isActiveLink("/categories") ? "text-blue-600" : "text-gray-700"}`}
+          >
             Categories
           </Link>
         </NavbarItem>
         <NavbarItem>
-          <Link color="foreground" href="/brands">
+          <Link 
+            color="foreground" 
+            href="/brands"
+            className={`font-bold ${isActiveLink("/brands") ? "text-blue-600" : "text-gray-700"}`}
+          >
             Brands
           </Link>
         </NavbarItem>
@@ -159,13 +164,19 @@ export default function Navbar() {
                 </Button>
               </DropdownTrigger>
               <DropdownMenu aria-label="User menu">
-                <DropdownItem key="profile">
-                  
+  
+                <DropdownItem key="orders" textValue="My Orders">
+                  <Link href="/allorders" className="w-full flex items-center">
+                    <i className="fa-solid fa-list-check mr-2"></i>
+                    My Orders
+                  </Link>
                 </DropdownItem>
                 <DropdownItem
                   key="logout"
                   color="danger"
                   onClick={handleLogout}
+                  textValue="Logout"
+                  className="flex items-center"
                 >
                   <i className="fa-solid fa-arrow-right-from-bracket mr-2"></i>
                   Logout
@@ -175,10 +186,23 @@ export default function Navbar() {
           </NavbarItem>
         ) : (
           <NavbarItem>
-            <Link href="/login">
-              <i className="fa-regular fa-user text-xl"></i>
-              <span className="hidden md:inline ml-2">Login</span>
-            </Link>
+            <Dropdown>
+              <DropdownTrigger>
+                <Button variant="light" className="flex items-center gap-2">
+                  <i className="fa-regular fa-user text-xl"></i>
+                  <span className="hidden md:inline">Account</span>
+                </Button>
+              </DropdownTrigger>
+              <DropdownMenu aria-label="Account menu">
+                <DropdownItem key="login" textValue="Login">
+                  <Link href="/login" className="w-full flex items-center">
+                    <i className="fa-solid fa-right-to-bracket mr-2"></i>
+                    Login
+                  </Link>
+                </DropdownItem>
+               
+              </DropdownMenu>
+            </Dropdown>
           </NavbarItem>
         )}
       </NavbarContent>
@@ -197,71 +221,100 @@ export default function Navbar() {
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="sm:hidden z-50 absolute top-full left-0 w-full bg-gray-200 shadow-md flex flex-col gap-2 p-4">
+          {/* Cart and Wishlist at the top */}
+          <div className="flex justify-center gap-6 mb-4">
+            <Link href="/wishList" onClick={() => setIsMobileMenuOpen(false)}>
+              <div className="flex flex-col items-center">
+                <i className="fa-regular fa-heart text-2xl mb-1"></i>
+                <span className="text-xs">Wishlist</span>
+              </div>
+            </Link>
+
+            <div className="relative">
+              <Link href="/cart" onClick={() => setIsMobileMenuOpen(false)}>
+                <div className="flex flex-col items-center">
+                  <i className="fa-solid fa-cart-plus text-2xl mb-1"></i>
+                  <span className="text-xs">Cart</span>
+                </div>
+              </Link>
+              {cart.length > 0 && (
+                <span className="absolute -top-2 -right-2 bg-green-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {cart.length}
+                </span>
+              )}
+            </div>
+          </div>
+
+          {/* Navigation Links */}
           <Link
             href="/"
-            className="py-2 px-3 hover:bg-gray-300 rounded"
+            className={`py-2 px-3 hover:bg-gray-300 rounded font-bold ${isActiveLink("/") ? "text-blue-600" : "text-gray-700"}`}
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Home
           </Link>
           <Link
             href="/products"
-            className="py-2 px-3 hover:bg-gray-300 rounded"
+            className={`py-2 px-3 hover:bg-gray-300 rounded font-bold ${isActiveLink("/products") ? "text-blue-600" : "text-gray-700"}`}
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Products
           </Link>
           <Link
             href="/categories"
-            className="py-2 px-3 hover:bg-gray-300 rounded"
+            className={`py-2 px-3 hover:bg-gray-300 rounded font-bold ${isActiveLink("/categories") ? "text-blue-600" : "text-gray-700"}`}
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Categories
           </Link>
           <Link
             href="/brands"
-            className="py-2 px-3 hover:bg-gray-300 rounded"
+            className={`py-2 px-3 hover:bg-gray-300 rounded font-bold ${isActiveLink("/brands") ? "text-blue-600" : "text-gray-700"}`}
             onClick={() => setIsMobileMenuOpen(false)}
           >
             Brands
           </Link>
 
-          <div className="flex gap-4 mt-2 justify-center items-center">
-            <Link href="/wishList" onClick={() => setIsMobileMenuOpen(false)}>
-              <i className="fa-regular fa-heart text-xl"></i>
-            </Link>
-
-            <div className="relative">
-              <Link href="/cart" onClick={() => setIsMobileMenuOpen(false)}>
-                <i className="fa-solid fa-cart-plus text-xl"></i>
-              </Link>
-              {cart.length > 0 && (
-                <span className="absolute -top-3 -right-2 bg-green-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                  {cart.length}
-                </span>
-              )}
-            </div>
-
-            {isLoggedIn ? (
-              <div className="flex flex-col gap-2">
+          {/* Profile and Orders Section */}
+          {isLoggedIn ? (
+            <>
+              <div className="border-t border-gray-300 my-2 pt-2">
+                <p className="text-sm font-semibold text-gray-500 px-3 mb-1">My Account</p>
                 
-                <Button
-                  size="sm"
-                  color="danger"
-                  variant="flat"
-                  onClick={handleLogout}
-                  className="flex items-center gap-2"
+                <Link
+                  href="/allorders"
+                  className={`py-2 px-3 hover:bg-gray-300 rounded font-bold ${isActiveLink("/allorders") ? "text-blue-600" : "text-gray-700"}`}
+                  onClick={() => setIsMobileMenuOpen(false)}
                 >
-                  <i className="fa-solid fa-arrow-right-from-bracket"></i>
-                  Logout
-                </Button>
+                  <i className="fa-solid fa-list-check mr-2"></i>
+                  My Orders
+                </Link>
               </div>
-            ) : (
-              <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
-                <i className="fa-regular fa-user text-xl"></i>
+              <Button
+                size="sm"
+                color="danger"
+                variant="flat"
+                onClick={handleLogout}
+                className="flex items-center gap-2 justify-start mt-2"
+              >
+                <i className="fa-solid fa-arrow-right-from-bracket"></i>
+                Logout
+              </Button>
+            </>
+          ) : (
+            <div className="border-t border-gray-300 my-2 pt-2">
+              <p className="text-sm font-semibold text-gray-500 px-3 mb-1">Account</p>
+              <Link
+                href="/login"
+                className={`py-2 px-3 hover:bg-gray-300 rounded font-bold ${isActiveLink("/login") ? "text-blue-600" : "text-gray-700"}`}
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <i className="fa-solid fa-right-to-bracket mr-2"></i>
+                Login
               </Link>
-            )}
-          </div>
+              
+            </div>
+          )}
         </div>
       )}
     </HeroNavbar>

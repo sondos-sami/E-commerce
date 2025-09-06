@@ -1,17 +1,13 @@
 import Image from "next/image";
- 
+
 import MainSlider from "./_Component/MainSlider/MainSlider";
 // Images are now in public directory
 
-import ProductGridSkeleton from "./_Component/Product/Skeleton/ProductGridSkeleton";
+import ProductGridSkeleton from "./_Component/Skeleton/ProductGridSkeleton";
 import { Suspense } from "react";
 import AllProducts from "./_Component/Product/AllProducts";
 
-export default   function Home() {
- 
-
- 
-
+export default function Home() {
   return (
     <>
       {/* first section */}
@@ -38,10 +34,9 @@ export default   function Home() {
       </div>
 
       {/* second section */}
-     <Suspense fallback={<ProductGridSkeleton/>}>
-    
- <AllProducts/>
-     </Suspense>
+      <Suspense fallback={<ProductGridSkeleton />}>
+        <AllProducts />
+      </Suspense>
     </>
   );
 }

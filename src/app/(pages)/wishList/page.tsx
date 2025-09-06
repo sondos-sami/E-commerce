@@ -7,6 +7,7 @@ import toast from "react-hot-toast";
 import Loading from "@/app/_Component/Loading";
 import { Iproduct } from "@/app/types/products.type";
 import { useState } from "react";
+import WishlistSkeleton from "@/app/_Component/Skeleton/WishlistSkeleton";
 
 export default function WishlistPage() {
   const queryClient = useQueryClient();
@@ -58,7 +59,7 @@ const {
     },
   });
 
-  if (isLoading) return <Loading />;
+  if (isLoading)  return <WishlistSkeleton/>
 
  
   return (

@@ -10,6 +10,17 @@ import {
   addProductToWishlist,
   deleteProductFromWishlist,
 } from "@/lib/Services/wishList";
+ 
+const getCookie = (name: string) => {
+  if (typeof document === 'undefined') return null;
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) {
+    const result = parts.pop();
+    return result ? result.split(';').shift() : null;
+  }
+  return null;
+};
 
 export default function ProductCard({
   product,
@@ -25,23 +36,51 @@ export default function ProductCard({
   const [loadingCart, setLoadingCart] = useState(false);
   const [loadingWishlist, setLoadingWishlist] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
  
+  useEffect(() => {
+    const checkAuthStatus = () => {
+      const token = getCookie('token');
+      setIsLoggedIn(!!token);
+    };
+
+    checkAuthStatus();
+    const intervalId = setInterval(checkAuthStatus, 1000);
+    return () => clearInterval(intervalId);
+  }, []);
+
   useEffect(() => {
     setInWishlist(isInWishlist);
   }, [isInWishlist]);
 
-  // Add to Cart 
+ 
+  const checkAuth = () => {
+    if (!isLoggedIn) {
+      toast.error("Please login to add items");
+      return false;
+    }
+    return true;
+  };
+
+ 
   const { mutate: addToCartMutate } = useMutation({
     mutationFn: () => addProductToCart(product._id),
-    onMutate: () => setLoadingCart(true),
+    onMutate: () => {
+      if (!checkAuth()) {
+        throw new Error("Not authenticated");
+      }
+      setLoadingCart(true);
+    },
     onSuccess: (data) => {
       toast.success(data?.message || "Added to cart");
       queryClient.invalidateQueries({ queryKey: ["cart"] });
       queryClient.refetchQueries({ queryKey: ["cart"] });
     },
     onError: (err: any) => {
-      toast.error(err?.response?.data?.message || "Failed to add to cart");
+      if (err.message !== "Not authenticated") {
+        toast.error(err?.response?.data?.message || "Failed to add to cart");
+      }
     },
     onSettled: () => setLoadingCart(false),
   });
@@ -49,28 +88,58 @@ export default function ProductCard({
   // Add to Wishlist 
   const { mutate: addToWishlistMutate } = useMutation({
     mutationFn: () => addProductToWishlist(product._id),
-    onMutate: () => setLoadingWishlist(true),
+    onMutate: () => {
+      if (!checkAuth()) {
+        throw new Error("Not authenticated");
+      }
+      setLoadingWishlist(true);
+    },
     onSuccess: (data) => {
       toast.success(data?.message || "Added to wishlist");
       setInWishlist(true);
       queryClient.invalidateQueries({ queryKey: ["wishlist"] });
     },
-    onError: () => toast.error("You are not logged in. Please login"),
+    onError: (err: any) => {
+      if (err.message !== "Not authenticated") {
+        toast.error("Failed to add to wishlist");
+      }
+    },
     onSettled: () => setLoadingWishlist(false),
   });
 
   // Remove from Wishlist 
   const { mutate: removeFromWishlistMutate } = useMutation({
     mutationFn: () => deleteProductFromWishlist(product._id),
-    onMutate: () => setLoadingWishlist(true),
+    onMutate: () => {
+      if (!checkAuth()) {
+        throw new Error("Not authenticated");
+      }
+      setLoadingWishlist(true);
+    },
     onSuccess: (data) => {
       toast.success(data?.message || "Removed from wishlist");
       setInWishlist(false);
       queryClient.invalidateQueries({ queryKey: ["wishlist"] });
     },
-    onError: () => toast.error("Failed to remove from wishlist"),
+    onError: (err: any) => {
+      if (err.message !== "Not authenticated") {
+        toast.error("Failed to remove from wishlist");
+      }
+    },
     onSettled: () => setLoadingWishlist(false),
   });
+ 
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    addToCartMutate();
+  };
+
+ 
+  const handleWishlistToggle = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (inWishlist) removeFromWishlistMutate();
+    else addToWishlistMutate();
+  };
 
   return (
     <Card
@@ -97,11 +166,7 @@ export default function ProductCard({
             : "bg-white text-gray-600 hover:bg-red-100"
           }
           ${isHovered ? "opacity-100" : "opacity-90"}`}
-        onClick={(e) => {
-          e.stopPropagation();
-          if (inWishlist) removeFromWishlistMutate();
-          else addToWishlistMutate();
-        }}
+        onClick={handleWishlistToggle}
       >
         {loadingWishlist ? (
           <i className="fa-solid fa-spinner fa-spin text-xl"></i>
@@ -122,7 +187,7 @@ export default function ProductCard({
         
        
         {isHovered && (
-          <div className="absolute inset-0   bg-opacity-40 flex items-center justify-center rounded-xl transition-opacity duration-300">
+          <div className="absolute inset-0 bg-opacity-40 flex items-center justify-center rounded-xl transition-opacity duration-300">
             <Button
               size="md"
               color="primary"
@@ -139,7 +204,7 @@ export default function ProductCard({
         )}
       </CardBody>
 
-    
+      {/* Product Details */}
       <CardHeader className="pb-2 pt-2 px-4 flex-col items-start space-y-2">
         <p className="text-green-600 font-medium text-sm">{product.category.name}</p>
         <h4 className="font-bold text-lg line-clamp-1 transition-colors duration-200
@@ -157,10 +222,7 @@ export default function ProductCard({
               ? "bg-green-700 scale-105 shadow-lg" 
               : "bg-green-600 scale-100"
             }`}
-          onClick={(e) => {
-            e.stopPropagation();
-            addToCartMutate();
-          }}
+          onClick={handleAddToCart}
         >
           {loadingCart ? (
             <span className="flex items-center gap-2">

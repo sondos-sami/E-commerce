@@ -40,7 +40,7 @@ document.cookie = `token=${res.token}; path=/`;
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex items-center justify-center p-3   min-h-screen bg-gray-100">
       <Card className="w-full max-w-md shadow-lg rounded-2xl">
         <CardHeader className="text-center text-xl font-semibold py-4">
           Sign In
@@ -66,7 +66,7 @@ document.cookie = `token=${res.token}; path=/`;
             
 
             <Button type="submit" color="primary" className="mt-4 w-full">
-              Sing In
+              Sign In
             </Button>
              <p className="mt-4 text-center text-sm text-gray-600">
             Don’t have an account?

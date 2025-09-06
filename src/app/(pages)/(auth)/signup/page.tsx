@@ -49,8 +49,8 @@ export default function RegisterForm() {
   }
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100">
-      <Card className="w-full max-w-md shadow-lg rounded-2xl">
+    <div className="flex items-center  p-3  justify-center min-h-screen bg-gray-100">
+      <Card className="w-full max-w-md  shadow-lg rounded-2xl">
         <CardHeader className="text-center text-xl font-semibold py-4">
           Create Account
         </CardHeader>

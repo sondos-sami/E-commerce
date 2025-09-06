@@ -7,6 +7,7 @@ export default function ProductCardSkeleton() {
     <Card className="py-4" radius="lg">
       {/* Image Skeleton */}
       <CardBody className="overflow-visible py-2">
+       
         <Skeleton className="rounded-xl">
           <div className="h-[22rem] w-[270px] rounded-xl bg-default-300" />
         </Skeleton>

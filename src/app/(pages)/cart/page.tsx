@@ -12,6 +12,8 @@ import toast from "react-hot-toast";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import Loading from "@/app/_Component/Loading";
 import { useRouter } from "next/navigation";
+import WishlistSkeleton from "@/app/_Component/Skeleton/WishlistSkeleton";
+import CartSkeleton from "@/app/_Component/Skeleton/CartSkeleton";
  
 
 export default function CartPage() {
@@ -78,7 +80,7 @@ export default function CartPage() {
   );
 
   if (isLoading) {
-    return <Loading />;
+    return  <CartSkeleton/>
   }
 
   function checkout() {

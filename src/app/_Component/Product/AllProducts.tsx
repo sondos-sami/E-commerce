@@ -26,23 +26,33 @@ export default async function AllProducts({ searchParams }: AllProductsProps) {
   const data = productsResponse.data;
   const productIds = wishlistResponse?.data?.map((product: any) => product._id) || [];
   
+  // Debug: Log the data to see if there are duplicates
+  console.log("Products data:", data);
+  console.log("Number of products:", data?.length);
+  
   // Filter products based on search query
   const filteredProducts = searchParams?.search 
     ? data.filter((product: Iproduct) =>
         product.title?.toLowerCase().includes(searchParams.search?.toLowerCase() || "")
       )
     : data;
+    
+  console.log("Filtered products:", filteredProducts);
+  console.log("Number of filtered products:", filteredProducts?.length);
 
   return (
     <div>
       <section className="p-6 grid grid-cols-1 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mt-4">
-        {filteredProducts.map((p: Iproduct) => (
-          <ProductCard 
-            key={p._id} 
-            product={p} 
-            isInWishlist={productIds?.includes(p._id)} 
-          />
-        ))}
+        {filteredProducts.map((p: Iproduct, index: number) => {
+          console.log(`Rendering product ${index}:`, p._id, p.title);
+          return (
+            <ProductCard 
+              key={`${p._id}-${index}`} 
+              product={p} 
+              isInWishlist={productIds?.includes(p._id)} 
+            />
+          );
+        })}
       </section>
       
       {searchParams?.search && filteredProducts.length === 0 && (

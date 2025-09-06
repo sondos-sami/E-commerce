@@ -14,6 +14,7 @@ export default function Allorders() {
       
       try {
         const userId = localStorage.getItem("id");
+        console.log(userId)
         if (!userId) {
           setError("User not found");
           setLoading(false);
@@ -21,12 +22,9 @@ export default function Allorders() {
         }
         
         const ordersData = await getAllUserOrders(userId);
-        if (ordersData.data) {
-          setOrders(ordersData.data);
-        } else {
-          setOrders([]);
-        }
-        console.log(ordersData)
+        setOrders(ordersData)
+
+        console.log(orders)
         setLoading(false);
       } catch (err: any) {
         
@@ -44,12 +42,7 @@ export default function Allorders() {
   return (
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8 text-gray-800">Your Orders</h1>
-      
-      {orders.length === 0 ? (
-        <div className="text-center py-12 bg-gray-100 rounded-lg">
-          <p className="text-gray-500">No orders found</p>
-        </div>
-      ) : (
+       
         <div className="space-y-6">
           {orders?.map(order => (
             <div key={order._id} className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -131,7 +124,7 @@ export default function Allorders() {
             </div>
           ))}
         </div>
-      )}
+     
     </div>
   );
 }

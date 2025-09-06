@@ -23,13 +23,16 @@ export default function CartPage() {
     queryKey: ["cart"],
     queryFn: getLoggedUserCart,
   });
+  
+  console.log("data",data)
      useEffect(() => {
+      console.log("data",data)
     localStorage.setItem("id",data?.data?.cartOwner)
     
   }, [data]);
    
   const cart = data?.data?.products ?? [];
-  
+  console.log("cart",cart);
  
  
 

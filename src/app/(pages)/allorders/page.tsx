@@ -19,8 +19,9 @@ const getCookie = (name: string) => {
   return null;
 };
 
-// Utility to parse JWT token and extract user ID
-const parseJwt = (token: string) => {
+// Utility to parse JWT token and extract user ID (safe for null/undefined)
+const parseJwt = (token?: string | null) => {
+  if (!token) return null;
   try {
     return JSON.parse(atob(token.split(".")[1]));
   } catch (e) {
@@ -52,7 +53,7 @@ export default function Allorders() {
 
   useEffect(() => {
     async function fetchOrders() {
-      const token: string | undefined | null = getCookie("token");
+      const token = getCookie("token");
 
       try {
         const decodedToken = parseJwt(token);

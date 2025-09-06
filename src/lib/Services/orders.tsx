@@ -5,7 +5,8 @@ import { redirect } from "next/navigation";
 
 export async function checkoutCartCash(id: string, data: any) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/orders/${id}`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
+    const response = await fetch(`${baseUrl}/orders/${id}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -25,7 +26,9 @@ export async function checkoutCartCash(id: string, data: any) {
 }
 export async function checkoutCartCredit(id: string, data: any) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/orders/checkout-session/${id}?url=${process.env.NEXT_PUBLIC_Site_URL}`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
+    const siteUrl = process.env.NEXT_PUBLIC_Site_URL || 'https://freshcart-sondos.netlify.app';
+    const response = await fetch(`${baseUrl}/orders/checkout-session/${id}?url=${siteUrl}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -46,7 +49,8 @@ export async function checkoutCartCredit(id: string, data: any) {
 }
 export async function getAllUserOrders(id: string) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/orders/user/${id}`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
+    const response = await fetch(`${baseUrl}/orders/user/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

@@ -3,7 +3,8 @@ import { cookies } from "next/headers";
  
 export async function getLoggedUserCart() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/cart`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
+    const response = await fetch(`${baseUrl}/cart`, {
       headers: {
         "Content-Type": "application/json",
         token: (await cookies()).get("token")?.value || "",
@@ -23,7 +24,8 @@ export async function getLoggedUserCart() {
 //  Add product to cart
 export async function addProductToCart(id: string) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/cart`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
+    const response = await fetch(`${baseUrl}/cart`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -45,8 +47,9 @@ export async function addProductToCart(id: string) {
 //  Delete product from cart
 export async function deleteProductFromCart(id: string) {
   try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/cart/${id}`,
+      `${baseUrl}/cart/${id}`,
       {
         method: "DELETE",
         headers: {
@@ -69,8 +72,9 @@ export async function deleteProductFromCart(id: string) {
 //  Update product quantity in cart
 export async function updateQuantityProduct(id: string, count: number) {
   try {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/cart/${id}`,
+      `${baseUrl}/cart/${id}`,
       {
         method: "PUT",
         headers: {

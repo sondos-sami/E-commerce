@@ -3,7 +3,8 @@ import { cookies } from "next/headers";
 
 export async function addProductToWishlist(id: string) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/wishlist`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
+    const response = await fetch(`${baseUrl}/wishlist`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -24,7 +25,8 @@ export async function addProductToWishlist(id: string) {
 }
 export async function getLoggedUserWishlist() {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/wishlist`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
+    const response = await fetch(`${baseUrl}/wishlist`, {
       headers: {
         "Content-Type": "application/json",
         token: (await cookies()).get("token")?.value || "",
@@ -43,7 +45,8 @@ export async function getLoggedUserWishlist() {
 }
 export async function deleteProductFromWishlist(id: string) {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/wishlist/${id}`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
+    const response = await fetch(`${baseUrl}/wishlist/${id}`, {
       method: "delete",
       headers: {
         "Content-Type": "application/json",

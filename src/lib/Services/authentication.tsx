@@ -1,6 +1,7 @@
 export async function registerUserApi(data: any) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/signup`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
+    const res = await fetch(`${baseUrl}/auth/signup`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -19,7 +20,8 @@ export async function registerUserApi(data: any) {
 }
 export async function loginUserApi(data: any) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/signin`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
+    const res = await fetch(`${baseUrl}/auth/signin`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -38,7 +40,8 @@ export async function loginUserApi(data: any) {
 }
 export async function ResetPassword(data: any) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/resetPassword`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
+    const res = await fetch(`${baseUrl}/auth/resetPassword`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -57,7 +60,8 @@ export async function ResetPassword(data: any) {
 }
 export async function forgotPasswords(data: any) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/forgotPasswords`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
+    const res = await fetch(`${baseUrl}/auth/forgotPasswords`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -76,7 +80,8 @@ export async function forgotPasswords(data: any) {
 }
 export async function verfiyCode(data: any) {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/verifyResetCode`, {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
+    const res = await fetch(`${baseUrl}/auth/verifyResetCode`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

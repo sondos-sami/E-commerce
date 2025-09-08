@@ -1,4 +1,4 @@
-// Client-side helper functions for cookie management
+ 
 function setCookie(name: string, value: string, days: number = 7) {
   if (typeof document !== 'undefined') {
     const expires = new Date();
@@ -61,7 +61,7 @@ export async function loginUserApi(data: any) {
     
     const result = await res.json();
     
-    // Set cookie if login is successful
+     localStorage.setItem("token",result.token)
     if (result.token) {
       setCookie('token', result.token, 7);
     }

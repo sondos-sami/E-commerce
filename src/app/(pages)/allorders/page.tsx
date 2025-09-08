@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import OrderSkeleton from "@/app/_Component/Skeleton/OrderSkeleton";
 
-// Utility to get cookie value (same as your other components)
+ 
 const getCookie = (name: string) => {
   if (typeof document === "undefined") return null;
   const value = `; ${document.cookie}`;
@@ -18,8 +18,7 @@ const getCookie = (name: string) => {
   }
   return null;
 };
-
-// Utility to parse JWT token and extract user ID (safe for null/undefined)
+ 
 const parseJwt = (token?: string | null) => {
   if (!token) return null;
   try {
@@ -36,11 +35,11 @@ export default function Allorders() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const router = useRouter();
 
-  // Check authentication status
+   
   useEffect(() => {
     const checkAuthStatus = () => {
       const token = getCookie("token");
-      const isAuthenticated = !!token;
+       const isAuthenticated = !!token;
       setIsLoggedIn(isAuthenticated);
 
       return true;

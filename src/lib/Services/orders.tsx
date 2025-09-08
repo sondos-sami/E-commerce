@@ -14,7 +14,7 @@ export async function checkoutCartCash(id: string, data: any) {
       },
       body: JSON.stringify(data),
     });
-    
+  
     if (!response.ok) {
       return { error: response.statusText || "Failed to checkout cart" };
     }
@@ -24,10 +24,11 @@ export async function checkoutCartCash(id: string, data: any) {
     return { error: err.message };
   }
 }
+ 
 export async function checkoutCartCredit(id: string, data: any) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
-    const siteUrl = process.env.NEXT_PUBLIC_Site_URL || 'https://freshcart-sondos.netlify.app';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL  || 'https://ecommerce.routemisr.com/api/v1';
+    const siteUrl = process.env.NEXT_PUBLIC_Site_URL|| 'http://localhost:3000';
     const response = await fetch(`${baseUrl}/orders/checkout-session/${id}?url=${siteUrl}`, {
       method: "POST",
       headers: {
@@ -42,7 +43,9 @@ export async function checkoutCartCredit(id: string, data: any) {
     }
     
     const result = await response.json();
-    redirect(result.session.url);
+    
+    return result;  
+    
   } catch (err: any) {
     return { error: err.message };
   }

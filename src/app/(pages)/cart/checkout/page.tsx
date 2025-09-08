@@ -27,8 +27,10 @@ function CheckoutContent() {
     }
     
     if (paymentMethod === 'credit') {
-      const res = await checkoutCartCredit(cartId, { formData });
-     
+      const res = await checkoutCartCredit(cartId, { "shippingAddress": formData });
+      if (res?.session?.url) {
+    window.location.href = res?.session?.url; // ✅ client-safe redirect
+  } 
     } else {
       const res = await checkoutCartCash(cartId, { "shippingAddress": formData });
       toast.success("Order placed successfully! You will pay on delivery.");

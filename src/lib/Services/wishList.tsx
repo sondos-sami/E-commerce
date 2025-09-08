@@ -3,7 +3,9 @@ import { cookies } from "next/headers";
 
 export async function addProductToWishlist(id: string) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      "https://ecommerce.routemisr.com/api/v1";
     const response = await fetch(`${baseUrl}/wishlist`, {
       method: "POST",
       headers: {
@@ -14,18 +16,22 @@ export async function addProductToWishlist(id: string) {
     });
 
     if (!response.ok) {
-      return { error: response.statusText || "Failed to add product to wishlist" };
+      return {
+        error: response.statusText || "Failed to add product to wishlist",
+      };
     }
 
     const result = await response.json();
-    return result;  
+    return result;
   } catch (err: any) {
     return { error: err.message };
   }
 }
 export async function getLoggedUserWishlist() {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      "https://ecommerce.routemisr.com/api/v1";
     const response = await fetch(`${baseUrl}/wishlist`, {
       headers: {
         "Content-Type": "application/json",
@@ -38,14 +44,16 @@ export async function getLoggedUserWishlist() {
     }
 
     const result = await response.json();
-    return result;  
+    return result;
   } catch (err: any) {
     return { error: err.message };
   }
 }
 export async function deleteProductFromWishlist(id: string) {
   try {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://ecommerce.routemisr.com/api/v1';
+    const baseUrl =
+      process.env.NEXT_PUBLIC_BASE_URL ||
+      "https://ecommerce.routemisr.com/api/v1";
     const response = await fetch(`${baseUrl}/wishlist/${id}`, {
       method: "delete",
       headers: {
@@ -55,11 +63,13 @@ export async function deleteProductFromWishlist(id: string) {
     });
 
     if (!response.ok) {
-      return { error: response.statusText || "Failed to delete product from wishlist" };
+      return {
+        error: response.statusText || "Failed to delete product from wishlist",
+      };
     }
 
     const result = await response.json();
-    return result;  
+    return result;
   } catch (err: any) {
     return { error: err.message };
   }
